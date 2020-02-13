@@ -41,7 +41,7 @@ exports.create = (req, res) => {
 }
 
 exports.login = (req, res) => {
-    //requête pour retrouver un admin en BDD -> findOne
+    
     console.log(req.body);
     Admin.findOne({ email: req.body.email },
         function(err, admin) {
@@ -49,12 +49,12 @@ exports.login = (req, res) => {
             if (!admin) return res.status(404).send('admin not found');
             //comparaison des mdp
             let passwordIsValid = bcrypt.compareSync(req.body.password, admin.password);
-            //check si la comparaison est True
+            //comparaison true?
             if (!passwordIsValid) return res.status(401).send({
                 auth: false,
                 token: null
             });
-            //On génère le token grâce à la méthode sign
+            //générer le token 
             let token = jwt.sign({
                     id: admin._id,
                     admin: admin.admin
